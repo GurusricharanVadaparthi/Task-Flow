@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="{{ profile.theme }}">
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="profile-card">
+        <h1>Notifications</h1>
+        <p class="subtitle">Stay on top of your tasks.</p>
+
+        {% if overdue %}
+        <div class="notif-section">
+            <h2 class="section-title red">Overdue ({{ overdue.count }})</h2>
+            {% for task in overdue %}
+            <div class="notif-item overdue-item">
+                <strong>{{ task.task_name }}</strong>
+                <small>Due: {{ task.due_date|date:"d M Y" }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if due_today %}
+        <div class="notif-section">
+            <h2 class="section-title orange">Due Today ({{ due_today.count }})</h2>
+            {% for task in due_today %}
+            <div class="notif-item today-item">
+                <strong>{{ task.task_name }}</strong>
+                <small>Due today</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if recent_completed %}
+        <div class="notif-section">
+            <h2 class="section-title green">Recently Completed</h2>
+            {% for task in recent_completed %}
+            <div class="notif-item completed-item">
+                <strong>{{ task.task_name }}</strong>
+                <small>{{ task.completed_at|date:"d M Y, H:i" }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not overdue and not due_today and not recent_completed %}
+        <div class="empty-notif">
+            <h2>All Clear!</h2>
+            <p>You have no notifications right now.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/todo.js' %}"></script>
+</body>
+</html>

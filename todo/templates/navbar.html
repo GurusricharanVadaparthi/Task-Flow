@@ -1,0 +1,30 @@
+{% load static %}
+<nav class="navbar">
+    <div class="nav-brand">
+        <a href="{% url 'dashboard' %}">TaskFlow</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+        <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+        <a href="{% url 'calendar' %}" class="nav-link">Calendar</a>
+        <a href="{% url 'activity' %}" class="nav-link">Activity</a>
+        <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+        <a href="{% url 'settings' %}" class="nav-link">Settings</a>
+
+        <a href="{% url 'notifications' %}" class="nav-link notif-link">
+            🔔
+            {% if notif_count and notif_count > 0 %}
+                <span class="notif-badge">{{ notif_count }}</span>
+            {% endif %}
+        </a>
+
+        <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</nav>

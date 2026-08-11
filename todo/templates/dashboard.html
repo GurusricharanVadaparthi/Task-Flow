@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body data-theme="{{ profile.theme }}">
+
+{% include 'navbar.html' %}
+
+<div class="container">
+
+    <header class="dashboard-header">
+        <div>
+            <h1>Welcome, {{ request.user.username }}</h1>
+            <p>Stay organized and keep moving forward.</p>
+        </div>
+        <div class="export-buttons">
+            <a href="{% url 'export_csv' %}" class="export-btn">Export CSV</a>
+            <a href="{% url 'export_pdf' %}" class="export-btn">Export PDF</a>
+        </div>
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="statistics">
+        <div class="card"><h3>Total Tasks</h3><h2>{{ total_tasks }}</h2></div>
+        <div class="card card-completed"><h3>Completed</h3><h2>{{ completed_tasks }}</h2></div>
+        <div class="card pending"><h3>Pending</h3><h2>{{ pending_tasks }}</h2></div>
+        <div class="card overdue"><h3>Overdue</h3><h2>{{ overdue_tasks }}</h2></div>
+    </section>
+
+    <section class="progress-section">
+        <div class="progress-header">
+            <h3>Overall Progress</h3>
+            <span>{{ progress }}%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+    </section>
+
+    {% if total_tasks > 0 %}
+    <section class="charts-section">
+        <div class="chart-card">
+            <h3>Activity (Last 7 Days)</h3>
+            <div style="height: 250px;"><canvas id="activityChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Priority Distribution</h3>
+            <div style="height: 250px;"><canvas id="priorityChart"></canvas></div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="controls">
+        <form method="GET" action="{% url 'dashboard' %}">
+            <div class="search-bar">
+                <input type="text" name="search" placeholder="Search tasks..." value="{{ search_query }}">
+                <button type="submit">Search</button>
+            </div>
+            <div class="filter-group">
+                <select name="status">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Status</option>
+                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                    <option value="overdue" {% if status_filter == 'overdue' %}selected{% endif %}>Overdue</option>
+                </select>
+                <select name="priority">
+                    <option value="all" {% if priority_filter == 'all' %}selected{% endif %}>All Priorities</option>
+                    <option value="high" {% if priority_filter == 'high' %}selected{% endif %}>High</option>
+                    <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="low" {% if priority_filter == 'low' %}selected{% endif %}>Low</option>
+                </select>
+                <a href="{% url 'dashboard' %}" class="clear-filter">Clear</a>
+            </div>
+        </form>
+    </section>
+
+    <section class="task-form">
+        <form method="POST" id="addTaskForm">
+            {% csrf_token %}
+            <input type="text" name="task_name" placeholder="Task name..." required>
+            <textarea name="description" placeholder="Description (optional)..." rows="2"></textarea>
+            <div class="task-form-row">
+                <select name="priority">
+                    <option value="low" {% if profile.default_priority == 'low' %}selected{% endif %}>Low Priority</option>
+                    <option value="medium" {% if profile.default_priority == 'medium' %}selected{% endif %}>Medium Priority</option>
+                    <option value="high" {% if profile.default_priority == 'high' %}selected{% endif %}>High Priority</option>
+                </select>
+                <input type="date" name="due_date">
+                <button type="submit" class="add-btn">
+                    <span class="btn-text">Add Task</span>
+                    <span class="btn-spinner" style="display:none;"></span>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="task-list">
+        {% if tasks %}
+            {% for task in tasks %}
+            <div class="task-card priority-{{ task.priority }}">
+                <div class="task-details">
+                    <h3 class="task-title {% if task.is_completed %}completed{% endif %}">{{ task.task_name }}</h3>
+                    {% if task.description %}<p class="task-desc">{{ task.description }}</p>{% endif %}
+                    <div class="task-meta">
+                        <span class="badge {{ task.priority }}">{{ task.get_priority_display }}</span>
+                        {% if task.is_overdue %}<span class="badge overdue">Overdue</span>{% endif %}
+                        {% if task.is_due_today %}<span class="badge due-today">Due Today</span>{% endif %}
+                        {% if task.due_date %}<small>Due: {{ task.due_date|date:"d M Y" }}</small>{% endif %}
+                        <small>Created: {{ task.created_at|date:"d M Y" }}</small>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <a href="{% url 'toggle_task_status' task.id %}" class="complete-btn">
+                        {% if task.is_completed %}Undo{% else %}Complete{% endif %}
+                    </a>
+                    <a href="{% url 'update_task' task.id %}" class="edit-btn">Edit</a>
+                    <button type="button" class="delete-btn"
+                        onclick="openDeleteModal('{% url 'delete_task' task.id %}', '{{ task.task_name|escapejs }}')">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h2>No Tasks Found</h2>
+                <p>
+                    {% if search_query or status_filter != 'all' or priority_filter != 'all' %}
+                        Try adjusting your filters.
+                    {% else %}
+                        Add your first task and start being productive.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </section>
+</div>
+
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal">
+        <h2>Delete Task?</h2>
+        <p>Are you sure you want to delete "<strong id="deleteTaskName"></strong>"?</p>
+        <div class="modal-buttons">
+            <button class="modal-cancel" onclick="closeDeleteModal()">Cancel</button>
+            <button class="modal-confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+
+{{ chart_labels|json_script:"chart-labels" }}
+{{ chart_created|json_script:"chart-created" }}
+{{ chart_completed|json_script:"chart-completed" }}
+{{ priority_data|json_script:"priority-data" }}
+
+<script src="{% static 'js/todo.js' %}"></script>
+
+{% if total_tasks > 0 %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var chartLabels = JSON.parse(document.getElementById('chart-labels').textContent);
+        var chartCreated = JSON.parse(document.getElementById('chart-created').textContent);
+        var chartCompleted = JSON.parse(document.getElementById('chart-completed').textContent);
+        var priorityData = JSON.parse(document.getElementById('priority-data').textContent);
+        initCharts(chartLabels, chartCreated, chartCompleted, priorityData);
+    });
+</script>
+{% endif %}
+
+</body>
+</html>

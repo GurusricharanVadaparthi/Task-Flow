@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity | TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="{{ profile.theme }}">
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="profile-card">
+        <h1>Activity Timeline</h1>
+        <p class="subtitle">Your recent task activity.</p>
+
+        {% if activities %}
+        <div class="timeline">
+            {% for activity in activities %}
+            <div class="timeline-item action-{{ activity.action }}">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">
+                        <strong>{{ activity.get_action_display }}:</strong> {{ activity.task_name }}
+                    </div>
+                    <small>{{ activity.timestamp|date:"d M Y, H:i" }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-notif">
+            <h2>No Activity Yet</h2>
+            <p>Start managing tasks and activity will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/todo.js' %}"></script>
+</body>
+</html>

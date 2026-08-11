@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="{{ profile.theme }}">
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="profile-card">
+        <h1>Settings</h1>
+        <p class="subtitle">Customize your TaskFlow experience.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" class="profile-form">
+            {% csrf_token %}
+
+            <h2 class="section-title">Appearance</h2>
+            <div class="form-group">
+                <label>Theme</label>
+                <select name="theme">
+                    <option value="light" {% if profile.theme == 'light' %}selected{% endif %}>Light</option>
+                    <option value="dark" {% if profile.theme == 'dark' %}selected{% endif %}>Dark</option>
+                    <option value="system" {% if profile.theme == 'system' %}selected{% endif %}>System</option>
+                </select>
+            </div>
+
+            <h2 class="section-title">Task Preferences</h2>
+            <div class="form-group">
+                <label>Default Priority</label>
+                <select name="default_priority">
+                    <option value="low" {% if profile.default_priority == 'low' %}selected{% endif %}>Low</option>
+                    <option value="medium" {% if profile.default_priority == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="high" {% if profile.default_priority == 'high' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sort Order</label>
+                <select name="sort_order">
+                    <option value="-created_at" {% if profile.sort_order == '-created_at' %}selected{% endif %}>Newest First</option>
+                    <option value="created_at" {% if profile.sort_order == 'created_at' %}selected{% endif %}>Oldest First</option>
+                    <option value="due_date" {% if profile.sort_order == 'due_date' %}selected{% endif %}>Due Date</option>
+                    <option value="priority" {% if profile.sort_order == 'priority' %}selected{% endif %}>Priority</option>
+                    <option value="task_name" {% if profile.sort_order == 'task_name' %}selected{% endif %}>Name (A-Z)</option>
+                </select>
+            </div>
+
+            <h2 class="section-title">Notifications</h2>
+            <div class="toggle-group">
+                <label class="toggle-label">
+                    <input type="checkbox" name="email_notifications" {% if profile.email_notifications %}checked{% endif %}>
+                    <span>Email Notifications</span>
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" name="browser_notifications" {% if profile.browser_notifications %}checked{% endif %}>
+                    <span>Browser Notifications</span>
+                </label>
+            </div>
+
+            <button type="submit" class="save-btn">Save Settings</button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/todo.js' %}"></script>
+</body>
+</html>

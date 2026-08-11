@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar | TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="{{ profile.theme }}">
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="calendar-card">
+        <div class="calendar-header">
+            <a href="?year={{ prev_year }}&month={{ prev_month }}" class="cal-nav">◀</a>
+
+            <form method="GET" class="cal-selector" id="calSelector">
+                <select name="month" onchange="document.getElementById('calSelector').submit()">
+                    {% for m_num, m_name in months_list %}
+                        <option value="{{ m_num }}" {% if m_num == month %}selected{% endif %}>{{ m_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="year" onchange="document.getElementById('calSelector').submit()">
+                    {% for y in years_list %}
+                        <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+
+                <a href="?year={{ today_year }}&month={{ today_month }}" class="today-btn">Today</a>
+            </form>
+
+            <a href="?year={{ next_year }}&month={{ next_month }}" class="cal-nav">▶</a>
+        </div>
+
+        <div class="calendar-grid">
+            <div class="day-header">Sun</div>
+            <div class="day-header">Mon</div>
+            <div class="day-header">Tue</div>
+            <div class="day-header">Wed</div>
+            <div class="day-header">Thu</div>
+            <div class="day-header">Fri</div>
+            <div class="day-header">Sat</div>
+
+            {% for week in weeks %}
+                {% for day_data in week %}
+                    <div class="calendar-day {% if day_data.day == 0 %}empty{% endif %} {% if day_data.is_today %}today{% endif %}">
+                        {% if day_data.day > 0 %}
+                            <div class="day-number">{{ day_data.day }}</div>
+                            {% for task in day_data.tasks %}
+                                <div class="cal-task priority-{{ task.priority }} {% if task.is_completed %}done{% endif %}">
+                                    {{ task.task_name|truncatechars:18 }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/todo.js' %}"></script>
+</body>
+</html>
