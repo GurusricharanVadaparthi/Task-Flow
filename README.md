@@ -4,78 +4,88 @@
 ![Django](https://img.shields.io/badge/Django-4.2-092E20?logo=django&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?logo=javascript&logoColor=black)
 ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)
 
-**TaskFlow** is a modern, feature-rich task management web application built with Django. It helps users organize their daily tasks with priorities, due dates, analytics, and a beautiful responsive interface — all in one place.
+**TaskFlow** is a task management web application built with Django. It helps users organize daily tasks with priorities, due dates, analytics, and a responsive interface.
 
 ---
 
 ## 🌟 Features
 
 ### 🔐 Authentication & Security
+
 - User registration and login system
-- Secure password hashing (PBKDF2-SHA256)
+- Secure password hashing using PBKDF2-SHA256
 - Password reset flow via email
 - Session-based authentication
 - User-specific data isolation
 
 ### ✅ Task Management
-- Create, Read, Update, Delete (CRUD) operations
+
+- Create, Read, Update, and Delete (CRUD) operations
 - Task priorities (Low, Medium, High) with color coding
-- Due date scheduling with overdue detection
-- Rich task descriptions
-- Mark tasks as complete/incomplete
+- Due-date scheduling with overdue detection
+- Task descriptions
+- Mark tasks as complete or incomplete
 - Delete confirmation modal
 
 ### 🔍 Search & Filtering
-- Real-time task search by name
+
+- Search tasks by name
 - Filter by status (All, Pending, Completed, Overdue)
 - Filter by priority (Low, Medium, High)
-- Customizable sort order (Newest, Oldest, Due Date, Priority, Name)
+- Sort tasks by Newest, Oldest, Due Date, Priority, or Name
 
 ### 📊 Analytics Dashboard
+
 - Interactive charts powered by Chart.js
-- 7-day activity trends (line chart)
-- Priority distribution (doughnut chart)
-- Overall progress bar with percentage
-- Statistics cards (Total, Completed, Pending, Overdue)
+- 7-day activity trends using a line chart
+- Priority distribution using a doughnut chart
+- Overall progress with percentage
+- Statistics cards for Total, Completed, Pending, and Overdue tasks
 
 ### 📅 Calendar View
-- Monthly calendar with tasks displayed on due dates
-- Quick navigation with month/year dropdowns
-- "Today" button for instant jump to current date
-- Color-coded tasks by priority
-- Fully responsive on mobile
+
+- Monthly calendar with tasks displayed on their due dates
+- Month and year navigation
+- "Today" button to quickly jump to the current date
+- Color-coded tasks based on priority
+- Responsive calendar layout
 
 ### 🕒 Activity Timeline
-- Real-time activity logging
-- Tracks all actions: create, edit, complete, delete
-- Beautiful timeline UI with color-coded events
-- Last 100 activities displayed
+
+- Activity logging for task actions
+- Tracks actions such as creating, editing, completing, and deleting tasks
+- Color-coded activity timeline
+- Displays the latest 100 activities
 
 ### 🔔 Notifications
-- Browser push notifications for overdue/due-today tasks
-- Native OS toast notifications (Windows Action Center / macOS)
+
+- Notifications for overdue and due-today tasks
+- Native OS notifications
 - In-app notification page with categorized alerts
-- Smart deduplication (won't spam same notification)
+- Notification deduplication to prevent repeated alerts
 
 ### 📤 Data Export
-- **CSV Export** – Download all tasks in spreadsheet format
-- **PDF Export** – Generate professional PDF reports using ReportLab
-- Styled tables with headers, colors, and formatting
+
+- **CSV Export** – Download tasks in spreadsheet format
+- **PDF Export** – Generate formatted PDF reports using ReportLab
+- Formatted tables with headers and styling
 
 ### 🎨 UI/UX Highlights
+
 - **Dark Mode** – Light, Dark, and System theme options
-- **Responsive Design** – Mobile-first approach with hamburger menu
-- **Loading Animations** – Button spinners, fade-in cards, slide-up modals
-- **Modal Confirmations** – Beautiful delete confirmation dialogs
+- **Responsive Design** – Mobile-friendly layout with hamburger menu
+- **Loading Animations** – Button spinners, fade-in cards, and slide-up modals
+- **Modal Confirmations** – Delete confirmation dialogs
 - Smooth transitions and hover effects
 
 ### 👤 User Profile & Settings
-- Editable user profile (name, bio, email)
-- Profile stats (total tasks, completed, join date)
-- Customizable defaults (priority, sort order)
-- Theme preferences saved per user
+
+- Editable user profile with name, bio, and email
+- Profile statistics including total tasks, completed tasks, and join date
+- Customizable default priority and sort order
+- Theme preferences saved for each user
 - Notification preferences
 
 ---
@@ -83,15 +93,19 @@
 ## 🖼️ Screenshots
 
 ### Login Page
+
 ![Login Page](screenshots/login.png)
 
 ### Dashboard
+
 ![Dashboard](screenshots/dashboard.png)
 
 ### Calendar View
+
 ![Calendar View](screenshots/calendar.png)
 
 ### Analytics
+
 ![Analytics Charts](screenshots/analytics1.png)
 ![Analytics Charts](screenshots/analytics2.png)
 
@@ -100,27 +114,29 @@
 ## 🛠️ Tech Stack
 
 | Category | Technology |
-|----------|-----------|
+|----------|------------|
 | **Backend** | Django 4.2, Python 3.13 |
 | **Frontend** | HTML5, CSS3, JavaScript (ES6) |
 | **Database** | SQLite 3 |
 | **Charts** | Chart.js |
 | **PDF Generation** | ReportLab |
-| **Authentication** | Django Auth (session-based) |
-| **Icons/Fonts** | Google Fonts (Inter) |
+| **Authentication** | Django Authentication |
+| **Fonts** | Google Fonts (Inter) |
 
 ---
 
 ## 📦 Installation
 
 ### Prerequisites
+
 - Python 3.10 or higher
 - pip (Python package manager)
 - Git
 
 ### Setup Instructions
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/GurusricharanVadaparthi/taskflow.git
-   cd taskflow
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/GurusricharanVadaparthi/Task-Flow.git
+cd Task-Flow
