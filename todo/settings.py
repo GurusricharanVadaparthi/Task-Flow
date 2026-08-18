@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-kpje9966h3o@9p&c%4@nwylo+wu9!nm@&e1y(yc99g&*y5j5xg
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["task-flow-3-0wwe.onrender.com"]
+ALLOWED_HOSTS = ["https://task-flow-3-nd8n.onrender.com"]
 
 # --------------------------------------------------
 # Installed Applications
