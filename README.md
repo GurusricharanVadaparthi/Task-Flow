@@ -4,7 +4,7 @@
 ![Django](https://img.shields.io/badge/Django-4.2-092E20?logo=django&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?logo=javascript&logoColor=black)
 ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white)
-![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 **TaskFlow** is a task management web application built with Django. It helps users organize daily tasks with priorities, due dates, analytics, and a responsive interface.
 
