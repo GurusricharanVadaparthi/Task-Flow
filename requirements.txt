@@ -1,4 +1,4 @@
-vasgiref==3.12.1
+asgiref==3.12.1
 charset-normalizer==3.4.9
 Django==6.0.7
 pillow==12.3.0
